@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Резидентство ИНТЦ МГУ «Воробьевы горы»</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-deep:   #0A1628;
+      --blue-mid:    #0D2348;
+      --blue-accent: #1A3A6B;
+      --gold:        #C9A84C;
+      --gold-light:  #F0CC6E;
+      --gold-pale:   #FFF5D6;
+      --white:       #FFFFFF;
+      --grey-text:   #8FA3C0;
+      --card-bg:     rgba(255,255,255,0.04);
+      --card-border: rgba(201,168,76,0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: var(--blue-deep);
+      color: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(10,22,40,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900;
+      color: var(--blue-deep);
+      font-size: 0.85rem;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-logo-text {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.2;
+    }
+
+    .nav-logo-text span {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: var(--grey-text);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--grey-text);
+      font-size: 0.88rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold-light); }
+
+    .nav-cta {
+      padding: 0.6rem 1.5rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--blue-deep);
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+      overflow: hidden;
+    }
+
+    /* Orb backgrounds */
+    #hero::after {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(26,58,107,0.7) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -55%);
+      pointer-events: none;
+    }
+
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(80px);
+    }
+
+    .orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+      top: -100px; right: -100px;
+    }
+
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(26,58,107,0.5) 0%, transparent 70%);
+      bottom: -50px; left: -80px;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 820px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1.1rem;
+      border: 1px solid var(--card-border);
+      border-radius: 100px;
+      font-size: 0.78rem;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      background: rgba(201,168,76,0.06);
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 .gold { color: var(--gold-light); }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--grey-text);
+      max-width: 580px;
+      margin: 0 auto 2.8rem;
+      line-height: 1.7;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 0.9rem 2.2rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--blue-deep);
+      font-weight: 700;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(201,168,76,0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(201,168,76,0.35);
+    }
+
+    .btn-secondary {
+      padding: 0.9rem 2.2rem;
+      border: 1px solid rgba(201,168,76,0.35);
+      color: var(--gold-light);
+      font-size: 0.95rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(201,168,76,0.08);
+      border-color: var(--gold);
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin: 3rem auto 0;
+      max-width: 680px;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(8px);
+    }
+
+    .stat {
+      flex: 1;
+      padding: 1.4rem 1rem;
+      text-align: center;
+      border-right: 1px solid var(--card-border);
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--grey-text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── SECTIONS ── */
+    section { position: relative; z-index: 1; padding: 7rem 2rem; }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      color: var(--grey-text);
+      font-size: 1rem;
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 3.5rem;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--card-border), transparent);
+    }
+
+    /* ── REQUIREMENTS ── */
+    #requirements { background: linear-gradient(180deg, var(--blue-deep) 0%, var(--blue-mid) 100%); }
+
+    .req-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .req-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .req-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .req-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(201,168,76,0.35);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+    }
+
+    .req-card:hover::before { opacity: 1; }
+
+    .req-icon {
+      width: 48px; height: 48px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .req-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: var(--white);
+    }
+
+    .req-card p {
+      font-size: 0.88rem;
+      color: var(--grey-text);
+      line-height: 1.6;
+    }
+
+    /* ── SECTORS ── */
+    #sectors { background: var(--blue-deep); }
+
+    .sectors-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .sector-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      font-size: 0.85rem;
+      color: var(--grey-text);
+      transition: all 0.2s;
+    }
+
+    .sector-pill:hover {
+      color: var(--white);
+      border-color: rgba(201,168,76,0.3);
+      background: rgba(201,168,76,0.05);
+    }
+
+    .sector-pill .icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    /* ── BENEFITS ── */
+    #benefits { background: linear-gradient(180deg, var(--blue-mid) 0%, var(--blue-deep) 100%); }
+
+    .benefits-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 700px) {
+      .benefits-layout { grid-template-columns: 1fr; }
+    }
+
+    .tax-table {
+      grid-column: 1 / -1;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .tax-table-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      padding: 0.9rem 1.5rem;
+      background: rgba(201,168,76,0.08);
+      border-bottom: 1px solid var(--card-border);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .tax-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      align-items: center;
+      transition: background 0.15s;
+    }
+
+    .tax-row:last-child { border-bottom: none; }
+    .tax-row:hover { background: rgba(255,255,255,0.03); }
+
+    .tax-name { font-size: 0.92rem; color: var(--white); }
+    .tax-before { font-size: 0.9rem; color: #EF4444; text-decoration: line-through; opacity: 0.75; }
+    .tax-after {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #4ADE80;
+    }
+
+    .benefit-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      transition: all 0.25s;
+    }
+
+    .benefit-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(201,168,76,0.3);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+    }
+
+    .benefit-icon {
+      font-size: 1.6rem;
+    }
+
+    .benefit-card h3 { font-size: 1rem; font-weight: 700; }
+    .benefit-card p { font-size: 0.85rem; color: var(--grey-text); line-height: 1.6; }
+
+    .tag-green {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      background: rgba(74,222,128,0.12);
+      border: 1px solid rgba(74,222,128,0.25);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      color: #4ADE80;
+      font-weight: 600;
+    }
+
+    /* ── TIMELINE ── */
+    #how {
+      background: var(--blue-deep);
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      max-width: 680px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 22px; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, var(--gold) 0%, rgba(201,168,76,0.15) 100%);
+    }
+
+    .timeline-step {
+      display: flex;
+      gap: 1.5rem;
+      padding-bottom: 2.5rem;
+    }
+
+    .timeline-step:last-child { padding-bottom: 0; }
+
+    .step-dot {
+      width: 44px; height: 44px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+      color: var(--blue-deep);
+      font-size: 0.9rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; padding-top: 0.6rem; }
+    .step-body p { font-size: 0.88rem; color: var(--grey-text); }
+
+    /* ── CTA ── */
+    #cta {
+      text-align: center;
+      padding: 7rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #cta::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 65%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .cta-box {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 3.5rem 2.5rem;
+    }
+
+    .cta-box h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .cta-box p { color: var(--grey-text); margin-bottom: 2rem; font-size: 0.95rem; }
+
+    .contact-row {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--grey-text);
+      font-size: 0.88rem;
+    }
+
+    .contact-item a { color: var(--gold-light); text-decoration: none; }
+    .contact-item a:hover { text-decoration: underline; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 2rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--grey-text);
+      font-size: 0.8rem;
+    }
+
+    footer a { color: var(--grey-text); text-decoration: none; }
+    footer a:hover { color: var(--gold-light); }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-up:nth-child(2) { transition-delay: 0.1s; }
+    .fade-up:nth-child(3) { transition-delay: 0.18s; }
+    .fade-up:nth-child(4) { transition-delay: 0.26s; }
+    .fade-up:nth-child(5) { transition-delay: 0.34s; }
+    .fade-up:nth-child(6) { transition-delay: 0.42s; }
+    .fade-up:nth-child(7) { transition-delay: 0.5s; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">
+      <div class="nav-logo-icon">МГУ</div>
+      <div class="nav-logo-text">
+        ИНТЦ «Воробьевы горы»
+        <span>Инновационный центр МГУ</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#requirements">Требования</a></li>
+      <li><a href="#sectors">Направления</a></li>
+      <li><a href="#benefits">Льготы</a></li>
+      <li><a href="#how">Как стать резидентом</a></li>
+    </ul>
+    <a href="#cta" class="nav-cta">Подать заявку</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-content">
+      <div class="hero-badge">ФЗ №216-ФЗ · 2017 · Москва</div>
+      <h1>Резидентство<br><span class="gold">ИНТЦ МГУ</span><br>«Воробьевы горы»</h1>
+      <p class="hero-sub">Инновационная экосистема мирового уровня при МГУ имени М.В. Ломоносова. Нулевые налоги, доступ к инфраструктуре университета и поддержка научных разработок.</p>
+      <div class="hero-btns">
+        <a href="#cta" class="btn-primary">Стать резидентом</a>
+        <a href="#benefits" class="btn-secondary">Узнать о льготах</a>
+      </div>
+      <div class="stats-bar">
+        <div class="stat">
+          <div class="stat-num">0%</div>
+          <div class="stat-label">Налог на прибыль</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">0%</div>
+          <div class="stat-label">НДС</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">15%</div>
+          <div class="stat-label">Страховые взносы</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">10</div>
+          <div class="stat-label">Лет действия льгот</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- REQUIREMENTS -->
+  <section id="requirements">
+    <div class="container">
+      <p class="section-label fade-up">Условия участия</p>
+      <h2 class="section-title fade-up">Требования к резиденту</h2>
+      <p class="section-desc fade-up">Три обязательных условия для получения статуса резидента ИНТЦ МГУ «Воробьевы горы».</p>
+
+      <div class="req-grid">
+        <div class="req-card fade-up">
+          <div class="req-icon">🏛️</div>
+          <h3>Российское юридическое лицо</h3>
+          <p>Организация должна быть создана и зарегистрирована в соответствии с законодательством Российской Федерации. Статус должен быть действующим.</p>
+        </div>
+        <div class="req-card fade-up">
+          <div class="req-icon">🔬</div>
+          <h3>Научно-технологическое направление</h3>
+          <p>Компания обязана вести деятельность в одной из 7 приоритетных научно-технологических сфер, определённых регламентом ИНТЦ МГУ.</p>
+        </div>
+        <div class="req-card fade-up">
+          <div class="req-icon">📍</div>
+          <h3>Регистрация на территории ИНТЦ</h3>
+          <p>Юридическое лицо должно быть официально зарегистрировано на территории ИНТЦ МГУ «Воробьевы горы» — это обязательное условие для получения льгот.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECTORS -->
+  <section id="sectors">
+    <div class="container">
+      <p class="section-label fade-up">Приоритетные кластеры</p>
+      <h2 class="section-title fade-up">7 направлений деятельности</h2>
+      <p class="section-desc fade-up">Ваша компания должна работать в одном из следующих научно-технологических направлений:</p>
+
+      <div class="sectors-wrapper">
+        <div class="sector-pill fade-up"><span class="icon">🧬</span>Биомедицина и фармацевтика</div>
+        <div class="sector-pill fade-up"><span class="icon">⚛️</span>Нанотехнологии и наноматериалы</div>
+        <div class="sector-pill fade-up"><span class="icon">💻</span>IT и математическое моделирование</div>
+        <div class="sector-pill fade-up"><span class="icon">🤖</span>Робототехника и энергосбережение</div>
+        <div class="sector-pill fade-up"><span class="icon">🚀</span>Космические исследования</div>
+        <div class="sector-pill fade-up"><span class="icon">🌍</span>Геономия и экология</div>
+        <div class="sector-pill fade-up"><span class="icon">🧠</span>Гуманитарные и когнитивные науки</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- BENEFITS -->
+  <section id="benefits">
+    <div class="container">
+      <p class="section-label fade-up">Преференции</p>
+      <h2 class="section-title fade-up">Льготы на 10 лет</h2>
+      <p class="section-desc fade-up">Резиденты получают исключительные налоговые и административные преференции сроком на 10 лет с момента регистрации.</p>
+
+      <div class="benefits-layout">
+
+        <!-- Tax table -->
+        <div class="tax-table fade-up">
+          <div class="tax-table-header">
+            <div>Налог / сбор</div>
+            <div>Стандарт</div>
+            <div>Резидент</div>
+          </div>
+          <div class="tax-row">
+            <div class="tax-name">Налог на прибыль</div>
+            <div class="tax-before">20%</div>
+            <div class="tax-after">0%</div>
+          </div>
+          <div class="tax-row">
+            <div class="tax-name">НДС</div>
+            <div class="tax-before">22%</div>
+            <div class="tax-after">0%</div>
+          </div>
+          <div class="tax-row">
+            <div class="tax-name">Налог на имущество</div>
+            <div class="tax-before">2,2%</div>
+            <div class="tax-after">0%</div>
+          </div>
+          <div class="tax-row">
+            <div class="tax-name">Страховые взносы</div>
+            <div class="tax-before">30%</div>
+            <div class="tax-after">15%</div>
+          </div>
+          <div class="tax-row">
+            <div class="tax-name">Таможенные пошлины</div>
+            <div class="tax-before">до 54%</div>
+            <div class="tax-after">0%</div>
+          </div>
+        </div>
+
+        <!-- Benefit cards -->
+        <div class="benefit-card fade-up">
+          <div class="benefit-icon">🌐</div>
+          <h3>Иностранные сотрудники</h3>
+          <p>Разрешение на привлечение иностранных специалистов не требуется. Нет дополнительных пошлин и бюрократических барьеров.</p>
+          <span class="tag-green">Разрешение не нужно</span>
+        </div>
+
+        <div class="benefit-card fade-up">
+          <div class="benefit-icon">📋</div>
+          <h3>Упрощённое лицензирование</h3>
+          <p>Лицензии на медицинскую и образовательную деятельность не требуется — прямой доступ к реализации R&D-проектов.</p>
+          <span class="tag-green">Лицензия не нужна</span>
+        </div>
+
+        <div class="benefit-card fade-up">
+          <div class="benefit-icon">🏛️</div>
+          <h3>Инфраструктура МГУ</h3>
+          <p>Доступ к лабораториям, оборудованию и экспертной поддержке профессорско-преподавательского состава Московского университета.</p>
+        </div>
+
+        <div class="benefit-card fade-up">
+          <div class="benefit-icon">🤝</div>
+          <h3>Конференц-пространства</h3>
+          <p>Переговорные комнаты, конференц-залы и площадки для мероприятий на территории одного из ведущих университетов мира.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- HOW TO -->
+  <section id="how">
+    <div class="container">
+      <p class="section-label fade-up">Процесс</p>
+      <h2 class="section-title fade-up">Как стать резидентом</h2>
+      <p class="section-desc fade-up">Простой путь от первого контакта до получения статуса.</p>
+
+      <div class="timeline">
+        <div class="timeline-step fade-up">
+          <div class="step-dot">1</div>
+          <div class="step-body">
+            <h3>Проверьте соответствие</h3>
+            <p>Убедитесь, что ваша деятельность входит в одно из 7 приоритетных направлений ИНТЦ МГУ.</p>
+          </div>
+        </div>
+        <div class="timeline-step fade-up">
+          <div class="step-dot">2</div>
+          <div class="step-body">
+            <h3>Подайте заявку</h3>
+            <p>Свяжитесь с командой ИНТЦ по электронной почте или телефону, опишите ваш проект и запросите форму заявки.</p>
+          </div>
+        </div>
+        <div class="timeline-step fade-up">
+          <div class="step-dot">3</div>
+          <div class="step-body">
+            <h3>Пройдите рассмотрение</h3>
+            <p>Ваша заявка будет рассмотрена экспертным советом ИНТЦ МГУ на предмет соответствия критериям.</p>
+          </div>
+        </div>
+        <div class="timeline-step fade-up">
+          <div class="step-dot">4</div>
+          <div class="step-body">
+            <h3>Зарегистрируйтесь на территории ИНТЦ</h3>
+            <p>После одобрения зарегистрируйте юридическое лицо на территории ИНТЦ МГУ «Воробьевы горы».</p>
+          </div>
+        </div>
+        <div class="timeline-step fade-up">
+          <div class="step-dot">5</div>
+          <div class="step-body">
+            <h3>Получите статус и льготы</h3>
+            <p>Начните пользоваться нулевыми налогами, инфраструктурой МГУ и всеми привилегиями резидента — сроком на 10 лет.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CTA -->
+  <section id="cta">
+    <div class="container">
+      <div class="cta-box fade-up">
+        <div style="font-size:2.5rem; margin-bottom:1rem;">🎓</div>
+        <h2>Готовы стать резидентом<br>ИНТЦ МГУ?</h2>
+        <p>Расскажите о вашем проекте и получите консультацию по условиям резидентства.</p>
+        <a href="https://sticmsu.ru" target="_blank" class="btn-primary">Подать заявку</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>© 2024 ИНТЦ МГУ «Воробьевы горы»</div>
+    <div>
+      <a href="https://sticmsu.ru/study/demands/" target="_blank">Требования</a>
+      &nbsp;·&nbsp;
+      <a href="https://sticmsu.ru/study/preferences/" target="_blank">Преференции</a>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll-triggered fade animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
